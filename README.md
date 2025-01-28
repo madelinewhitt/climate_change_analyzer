@@ -2,7 +2,7 @@
 
 Write Up File: https://docs.google.com/document/d/13hmAmfA7NphLuhGfANLTmhc4CLwtUolRv2GushGzS78/edit?usp=sharing
 
-##Setup
+## Setup
 
 Hello group, to get started on the project, make sure you clone the repo to a folder on your computer
 then make sure to follow these steps
@@ -39,7 +39,7 @@ then make sure to follow these steps
         refactor structure of class
 
 
-##INFO ON REQUIREMENTS.TXT
+## INFO ON REQUIREMENTS.TXT
 This is a file where you can find the required dependencies
 
 there is no venv folder in the repo so this is the list of dependencies
