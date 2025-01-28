@@ -1,3 +1,52 @@
 # ClimateChangePythonApp
 
 Write Up File: https://docs.google.com/document/d/13hmAmfA7NphLuhGfANLTmhc4CLwtUolRv2GushGzS78/edit?usp=sharing
+
+## Setup
+
+Hello group, to get started on the project, make sure you clone the repo to a folder on your computer
+then make sure to follow these steps
+
+1. pull from branches
+        Before you start working on anything, make sure to pull from main and working, as well as ny branch you are directly working on.
+        This makes it much easier to handle conflicts and they are caught earlier than when it comes time to merge.
+2. Don't push to main
+        You will notice that pushing directly to main is not possible by design, to get your code to main, you must first push/merge with working.
+        And when that has no issues, we will push to main as the final product.
+        The working branch can also go by Production, and is used to represent a branch where work is still being done, not a working version
+3. git checkout your branch
+        The workflow that makes the most sense will be to create a branch for your addition, merge it into working, and
+        have everybody agree to update main with the updated version of working.
+        You don't have to stress to hard about following it, making some changes directly on working is no big deal, but
+        if you are doing something of substance that takes a while (more than 1 day) make sure to create a branch for it.
+4. Unit testing
+        This is a tedious but required part of this project so take it seriously.
+        It is not that bad and this is all you need to know.
+        A Unit test is going to consist of you writing test cases with known outcomes given a certain input, and asserting that the function does its job.
+        Unit tests are only for 3 categories of functions
+        - algorithms
+        - data_processor
+        - visualizer
+        We do not need any more tests than then number of functions in these categories.
+        When you work on these things MAKE SURE TO WRITE UNIT TESTS!!
+5. Descriptive commits
+        No real rules that you need to follow, all I ask is that we can understand what a commit does
+        some good practice ideas are
+        imperative commits
+        write commit in the imperative
+        add function that does thing
+        remove function that does other thing
+        refactor structure of class
+
+
+## INFO ON REQUIREMENTS.TXT
+This is a file where you can find the required dependencies
+
+there is no venv folder in the repo so this is the list of dependencies
+
+use the pip freeze command to find the packages installed in the venv
+
+these are required packages that make the project work
+
+While in a venv, do ```sh pip freeze > requirements.txt```
+to automatically
