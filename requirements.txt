@@ -1,3 +1,7 @@
 This is a file where you can find the required dependencies
 
 there is no venv folder in the repo so this is the list of dependencies
+
+use the pip freeze command to find the packages installed in the venv
+
+these are required packages that make the project work
