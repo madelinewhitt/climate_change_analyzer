@@ -50,3 +50,7 @@ these are required packages that make the project work
 
 While in a venv, do ```sh pip freeze > requirements.txt```
 to automatically
+
+
+Trello
+https://trello.com/b/4CCJTYPe/python-project
