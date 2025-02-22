@@ -4,6 +4,8 @@ import pandas as pd
 from shapely.geometry import Point
 import matplotlib.pyplot as plt 
 
+# TODO: Understand why there are errors with graphing extreme temp and drought 
+
 # Load the EMDAT Excel file
 file_path = "../data/gpkgData/public_emdat_incl_hist_2025-02-22.xlsx"
 df = pd.read_excel(file_path, engine="openpyxl")
