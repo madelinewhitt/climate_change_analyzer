@@ -1,5 +1,4 @@
-I want a tables that are going to be labeled refering to their containg disaster type
-Useful collumns I want to use
+Useful collumns
 
 DisasterType		TableName
 DisasterNo.		PK
@@ -31,7 +30,4 @@ No.Affected
 No. Homeless		NULL
 TotalAffected		NULL
 TotalDamage$		NULL
-
-tables include
-Natural
 
