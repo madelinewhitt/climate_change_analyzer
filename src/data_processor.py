@@ -1,10 +1,8 @@
-import geopandas
+import pandas as pd
 
+file_name = "../data/naturalDisaster2000-2024(EM-DAT Data).csv"
 
-gpkg_path = "../data/gpkgData/pend-gdis-1960-2018-disasterlocations.gpkg"
-
-gdf = geopandas.read_file(gpkg_path)
-
-print(gdf.head())
-
-print(gdf.disastertype)
+df = pd.read_csv(file_name, encoding='ISO-8859-1')
+# print(df.info())
+for d in df['Disaster Type']:
+    print(d == 'Flood')
