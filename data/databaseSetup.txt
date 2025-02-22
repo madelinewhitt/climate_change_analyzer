@@ -3,6 +3,7 @@ Useful collumns I want to use
 
 DisasterType		TableName
 DisasterNo.		PK
+Historic		Pre 2000 data
 Disaster subgroup	
 Disaster Subtype	
 Event Name		Null
@@ -32,3 +33,5 @@ TotalAffected		NULL
 TotalDamage$		NULL
 
 tables include
+Natural
+
