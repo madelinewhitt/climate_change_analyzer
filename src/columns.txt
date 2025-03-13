@@ -1,0 +1,30 @@
+DisasterType		TableName
+DisasterNo.		PK
+Disaster subgroup	
+Disaster Subtype	
+Event Name		Null
+ISO			3 letter country identifier
+Country
+Subregion
+Continent		Called Region
+Location		Null
+Origin			Null seems to only be storms
+DisasterResponse	Y/n
+Aid-Contribution	'000 US$
+
+Magnitude		Where applicable
+Magnitude scale		the metric of the magnitude, make these two into 1
+Latitude		NULL 
+Longitude		NULL
+RiverBasin?		NULL might as well
+StartYear
+StartMonth/Day		NULL
+EndYear
+EndDay/Month		NULL
+Total Deaths		NULL
+No.Injured		NULL  might make sense to have a separate table for casualties with the foreign key being the DisasterNo.
+No.Affected
+No. Homeless		NULL
+TotalAffected		NULL
+TotalDamage$		NULL
+
