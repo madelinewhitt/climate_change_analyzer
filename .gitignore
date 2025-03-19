@@ -36,6 +36,10 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
+#Data
+/data/gpkgData/pend-gdis-1960-2018-disasterlocations.gpkg
+/data/gpkgData/pend-gdis-1960-2018-disasterlocations.gpkg:Zone.Identifier
+
 # Unit test / coverage reports
 htmlcov/
 .tox/
