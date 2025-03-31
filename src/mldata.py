@@ -30,6 +30,7 @@ def remove_unwanted_cols(fileName):
     fileName = fileName.drop(columns=["Last Update"])
     fileName = fileName.drop(columns=["Entry Date"])
     fileName = fileName.drop(columns=["Origin"])
+    return fileName
 
 
 inputFilePath = "../data/NaturalDisasters1900-2025WithCoords.csv"
@@ -42,7 +43,7 @@ df = pd.read_csv(inputFilePath)
 #1) Only keeping natural disasters and wanted columns
 
 naturalDisastersOnly = df[df["Disaster Group"]== "Natural"]
-remove_unwanted_cols(naturalDisastersOnly)
+naturalDisastersOnly = remove_unwanted_cols(naturalDisastersOnly)
 
 #the ml algorithm target is magnitude so every row with an empty Magnitude
 #column has to be eliminated:
