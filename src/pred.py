@@ -24,5 +24,7 @@ future_df = pd.DataFrame({
 
 
 future_df['Predicted Magnitude'] = model.predict(future_df)
+print(future_df['Start Year'].value_counts())
+
 
 print(future_df.head())

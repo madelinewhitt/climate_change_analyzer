@@ -10,6 +10,9 @@ plt.xlabel('Longitude')
 plt.ylabel('Latitude')
 plt.title('Predicted Earthquake Magnitudes (Next 10 Years)')
 plt.colorbar(label='Predicted Magnitude')
+#print(future_df['Start Year'].value_counts())
+future_df.to_csv("predicted_earthquakes_2025_2034.csv", index=False)
+
 plt.show()
 
 
