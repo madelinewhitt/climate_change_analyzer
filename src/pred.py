@@ -30,4 +30,12 @@ future_df = pd.DataFrame(
 
 future_df["Predicted Magnitude"] = model.predict(future_df)
 
+<<<<<<< HEAD
 print(future_df.to_string())
+=======
+future_df['Predicted Magnitude'] = model.predict(future_df)
+print(future_df['Start Year'].value_counts())
+
+
+print(future_df.head())
+>>>>>>> ec4e6b04f2529fed3c26ed3d33cc76403bf3cfb8
