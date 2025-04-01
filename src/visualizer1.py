@@ -1,3 +1,6 @@
+# Universally prints ALL the disasters throughout the entire world
+# Timeline not included since it is ALL disasters 
+
 import geodatasets
 import geopandas as gpd
 import pandas as pd
