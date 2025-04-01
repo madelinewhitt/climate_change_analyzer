@@ -1,4 +1,4 @@
-import requests 
+import requests
 import json
 import os
 import io
@@ -6,6 +6,7 @@ from dotenv import load_dotenv, dotenv_values
 import pandas as pd
 
 load_dotenv()
+
 
 def interact_api():
     # URL of the IBTrACS dataset (Global CSV)
@@ -23,6 +24,7 @@ def interact_api():
         print(df.head())
     else:
         print(f"Error {response.status_code}: Unable to fetch data.")
+
 
 # Call the function
 interact_api()
