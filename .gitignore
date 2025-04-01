@@ -202,3 +202,4 @@ dist-ssr
 *.sw?
 
 src/frontend/node_modules/.bin/
+*.Identifier
