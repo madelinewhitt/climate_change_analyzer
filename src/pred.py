@@ -1,10 +1,14 @@
+from data_processor import load_disaster
 import numpy as np
 import pandas as pd
 from prep import model
 
 
 earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
-df = pd.read_csv(earthquakesOnlyFP)
+# df = pd.read_csv(earthquakesOnlyFP)
+df = load_disaster(
+    "Earthquake", ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"]
+)
 
 future_years = np.arange(2025, 2035)
 future_months = np.tile(np.arange(1, 13), len(future_years))
@@ -30,12 +34,7 @@ future_df = pd.DataFrame(
 
 future_df["Predicted Magnitude"] = model.predict(future_df)
 
-<<<<<<< HEAD
-print(future_df.to_string())
-=======
-future_df['Predicted Magnitude'] = model.predict(future_df)
-print(future_df['Start Year'].value_counts())
+print(future_df["Start Year"].value_counts())
 
 
 print(future_df.head())
->>>>>>> ec4e6b04f2529fed3c26ed3d33cc76403bf3cfb8
