@@ -11,7 +11,7 @@ def adf_test(series):
 
 # Load data
 original_df = pd.read_csv("../data/earthquakesOnlyFP.csv")
-predicted_df = pd.read_csv("predicted_earthquakes.csv")
+predicted_df = pd.read_csv("../data/predicted_earthquakes.csv")
 
 # Ensure necessary columns exist
 for df in [original_df, predicted_df]:
@@ -76,4 +76,4 @@ all_anomalies_predicted = pd.concat([anomalies_zscore_predicted, anomalies_iqr_p
 all_anomalies = pd.concat([all_anomalies_original, all_anomalies_predicted]).drop_duplicates()
 
 # Save only anomalies to a CSV file
-all_anomalies.to_csv("anomalies.csv", header=["Magnitude"])
+all_anomalies.to_csv("../data/anomalies.csv", header=["Magnitude"])

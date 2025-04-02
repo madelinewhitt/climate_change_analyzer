@@ -41,6 +41,6 @@ for target in ['Start Year', 'Latitude', 'Longitude', 'Magnitude']:
     input_features = ['Start Year', 'Latitude', 'Longitude', 'Magnitude']
     future_df[f'Predicted {target}'] = model_bundle.__dict__[target].predict(future_df[input_features])
 
-future_df.to_csv('predicted_earthquakes.csv', index=False)
+future_df.to_csv('../data/predicted_earthquakes.csv', index=False)
 
 print(future_df.head())
