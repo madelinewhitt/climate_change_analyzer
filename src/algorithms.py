@@ -46,7 +46,8 @@ def pred(df, model):
         df["Longitude"].min(), df["Longitude"].max(), len(future_years) * 12
     )
     
-    
+    future_latitudes = np.round(future_latitudes, 6)
+    future_longitudes = np.round(future_longitudes, 6)
 
     future_df = pd.DataFrame(
         {
