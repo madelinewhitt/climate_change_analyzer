@@ -1,7 +1,9 @@
 import pandas as pd
 import os
-#This file uses NaturalDisasters1900-2025WithCoords.csv data and 
-#reduces the data used by the machine learning algorithm
+
+
+# This file uses NaturalDisasters1900-2025WithCoords.csv data and
+# reduces the data used by the machine learning algorithm
 def remove_unwanted_cols(fileName):
     fileName = fileName.drop(columns=["Historic"])
     fileName = fileName.drop(columns=["Classification Key"])
@@ -40,38 +42,20 @@ outputFilePath = "../data/NaturalDisastersOnly.csv"
 df = pd.read_csv(inputFilePath)
 
 
-#1) Only keeping natural disasters and wanted columns
+# 1) Only keeping natural disasters and wanted columns
 
-naturalDisastersOnly = df[df["Disaster Group"]== "Natural"]
+naturalDisastersOnly = df[df["Disaster Group"] == "Natural"]
 naturalDisastersOnly = remove_unwanted_cols(naturalDisastersOnly)
 
-#the ml algorithm target is magnitude so every row with an empty Magnitude
-#column has to be eliminated:
-naturalDisastersOnly = naturalDisastersOnly.dropna(subset=['Magnitude']) 
+# the ml algorithm target is magnitude so every row with an empty Magnitude
+# column has to be eliminated:
+naturalDisastersOnly = naturalDisastersOnly.dropna(subset=["Magnitude"])
 naturalDisastersOnly.to_csv(outputFilePath, index=False)
 ofp = pd.read_csv(outputFilePath)
 
-#2) Separating rows by Disaster Types
+# 2) Separating rows by Disaster Types
 
- #Earthquake
+# Earthquake
 earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
-earthquakesOnly = ofp[ofp["Disaster Type"]=="Earthquake"]
+earthquakesOnly = ofp[ofp["Disaster Type"] == "Earthquake"]
 earthquakesOnly.to_csv(earthquakesOnlyFP, index=False)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
