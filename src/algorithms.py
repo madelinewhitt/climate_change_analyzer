@@ -11,13 +11,13 @@ def prep(df):
     df = df.dropna(axis=1, how="all")
 
     features = ["Start Year", "Start Month", "Latitude", "Longitude"]
-    target = "Magnitude"
+    target = "Total Deaths"
 
-    df = df.dropna(subset=["Magnitude"])
+    df = df.dropna(subset=["Total Deaths"])
 
-    df = df[~df["Magnitude"].isin([np.inf, -np.inf])]
+    df = df[~df["Total Deaths"].isin([np.inf, -np.inf])]
 
-    df["Magnitude"] = np.clip(df["Magnitude"], 0, 10)
+    df["Total Deaths"] = np.clip(df["Total Deaths"], 0, np.inf)
 
     X_train, X_test, y_train, y_test = train_test_split(
         df[features], df[target], test_size=0.2, random_state=42
@@ -45,6 +45,8 @@ def pred(df, model):
     future_longitudes = np.random.uniform(
         df["Longitude"].min(), df["Longitude"].max(), len(future_years) * 12
     )
+    
+    
 
     future_df = pd.DataFrame(
         {
@@ -55,7 +57,11 @@ def pred(df, model):
         }
     )
 
-    future_df["Magnitude"] = model.predict(future_df)
+    future_df["Total Deaths"] = model.predict(future_df)
+    
+    future_df["Total Deaths"] = np.clip(future_df["Total Deaths"], 0, np.inf)
+    
+    future_df["Total Deaths"] = future_df["Total Deaths"].astype(int)
 
     print(future_df["Start Year"].value_counts())
 
@@ -67,26 +73,27 @@ def vis(future_df, dis_type):
     plt.scatter(
         future_df["Longitude"],
         future_df["Latitude"],
-        c=future_df["Magnitude"],
+        c=future_df["Total Deaths"],
         cmap="coolwarm",
         alpha=0.5,
     )
     plt.xlabel("Longitude")
     plt.ylabel("Latitude")
-    plt.title(f"Predicted {dis_type} Magnitudes (Next 10 Years)")
-    plt.colorbar(label="Predicted Magnitude")
+    plt.title(f"Predicted {dis_type} Deaths (Next 10 Years)")
+    plt.colorbar(label="Predicted Deaths")
     plt.show()
 
 
 if __name__ == "__main__":
-    disaster_type = "Flood"
+    disaster_type = "Earthquake"
     df = load_disaster(
         disaster_type,
-        ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"],
+        ["Start Year", "Start Month", "Latitude", "Longitude", "Total Deaths"],
     )
     print(f"running for {disaster_type}")
     model = prep(df)
     future_df = pred(df, model)
+    
     vis(future_df, disaster_type)
     
     csv_filename = f"../data/predictions.csv"
