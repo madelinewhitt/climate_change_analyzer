@@ -55,7 +55,7 @@ def pred(df, model):
         }
     )
 
-    future_df["Predicted Magnitude"] = model.predict(future_df)
+    future_df["Magnitude"] = model.predict(future_df)
 
     print(future_df["Start Year"].value_counts())
 
@@ -67,7 +67,7 @@ def vis(future_df, dis_type):
     plt.scatter(
         future_df["Longitude"],
         future_df["Latitude"],
-        c=future_df["Predicted Magnitude"],
+        c=future_df["Magnitude"],
         cmap="coolwarm",
         alpha=0.5,
     )
@@ -88,3 +88,7 @@ if __name__ == "__main__":
     model = prep(df)
     future_df = pred(df, model)
     vis(future_df, disaster_type)
+    
+    csv_filename = f"../data/predictions.csv"
+    future_df.to_csv(csv_filename, index=False)
+    print(f"Predictions saved to {csv_filename}")

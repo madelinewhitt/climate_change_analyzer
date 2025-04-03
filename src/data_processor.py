@@ -182,7 +182,7 @@ def updateCoords(df):
 def load_disaster(type, cols=None):
     if cols is None:
         cols = []
-    df = pd.read_csv("./data/NaturalDisasters1900-2025WithCoords.csv")
+    df = pd.read_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
     df = df[df["Disaster Type"] == type]
     new_df = df[cols]
     return new_df
