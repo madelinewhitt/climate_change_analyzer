@@ -59,9 +59,9 @@ def pred(df, model):
     )
 
     future_df["Total Deaths"] = model.predict(future_df)
-    
+
     future_df["Total Deaths"] = np.clip(future_df["Total Deaths"], 0, np.inf)
-    
+
     future_df["Total Deaths"] = future_df["Total Deaths"].astype(int)
 
     print(future_df["Start Year"].value_counts())
@@ -86,17 +86,35 @@ def vis(future_df, dis_type):
 
 
 if __name__ == "__main__":
-    disaster_type = "Earthquake"
-    df = load_disaster(
-        disaster_type,
-        ["Start Year", "Start Month", "Latitude", "Longitude", "Total Deaths"],
-    )
-    print(f"running for {disaster_type}")
-    model = prep(df)
-    future_df = pred(df, model)
-    
-    vis(future_df, disaster_type)
-    
+    dfs = []
     csv_filename = f"../data/predictions.csv"
+    disaster_types = [
+        "Earthquake",
+        "Flood",
+        "Storm",
+        "Drought",
+        "Air",
+        "Volcanic activity",
+        "Wildfire",
+    ]
+    for disType in disaster_types:
+        df = load_disaster(
+            disType,
+            [
+                "Disaster Type",
+                "Start Year",
+                "Start Month",
+                "Latitude",
+                "Longitude",
+                "Total Deaths",
+            ],
+        )
+        print(f"running for {disType}")
+        model = prep(df)
+        future_df = pred(df, model)
+        # vis(future_df, disType)
+        dfs.append(df)
+
+    future_df = pd.concat(dfs, ignore_index=True)
     future_df.to_csv(csv_filename, index=False)
     print(f"Predictions saved to {csv_filename}")
