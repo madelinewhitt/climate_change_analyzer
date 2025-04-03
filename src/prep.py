@@ -1,23 +1,33 @@
+from data_processor import load_disaster
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
 
-earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
-df = pd.read_csv(earthquakesOnlyFP)
+# df = pd.read_csv("earthquakesOnlyFP.csv")
+# earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
 
-df = df.dropna(axis=1, how='all')
+df = load_disaster(
+    "Earthquake", ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"]
+)
 
-# Input and output
-features = ['Start Year', 'Latitude', 'Longitude', 'Magnitude']
-targets = ['Start Year', 'Latitude', 'Longitude', 'Magnitude']
 
-df = df.dropna(subset=features)
-df = df[~df[features].isin([np.inf, -np.inf]).any(axis=1)]
-df['Magnitude'] = np.clip(df['Magnitude'], 0, 10)
+df = df.dropna(axis=1, how="all")
 
-X_train, X_test = train_test_split(df[features], test_size=0.2, random_state=42)
+
+features = ["Start Year", "Start Month", "Latitude", "Longitude"]
+target = "Magnitude"
+
+df = df.dropna(subset=["Magnitude"])
+
+df = df[~df["Magnitude"].isin([np.inf, -np.inf])]
+
+df["Magnitude"] = np.clip(df["Magnitude"], 0, 10)
+
+X_train, X_test, y_train, y_test = train_test_split(
+    df[features], df[target], test_size=0.2, random_state=42
+)
 
 models = {}
 for target in targets:
@@ -38,3 +48,6 @@ model_bundle = SimpleNamespace(**models)
 
 
 
+mse = mean_squared_error(y_test, y_pred)
+
+print(f"Mean Squared Error: {mse}")

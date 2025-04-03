@@ -1,5 +1,6 @@
 from prep import df  # historical data
 from prep import model_bundle
+from data_processor import load_disaster
 import numpy as np
 import pandas as pd
 #from prep import model_bundle
@@ -8,6 +9,11 @@ import pandas as pd
 # Step 1: Count earthquakes per year historically
 yearly_counts = df['Start Year'].value_counts().sort_index()
 mean_per_year = int(yearly_counts.mean())  # or use median()
+earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
+# df = pd.read_csv(earthquakesOnlyFP)
+df = load_disaster(
+    "Earthquake", ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"]
+)
 
 # Step 2: Simulate yearly counts (here: Poisson based on historical mean)
 future_years = np.arange(2025, 2035)
