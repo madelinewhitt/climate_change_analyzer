@@ -1,6 +1,3 @@
-# Universally prints ALL the disasters throughout the entire world
-# Timeline not included since it is ALL disasters 
-
 import geodatasets
 import geopandas as gpd
 import pandas as pd
@@ -10,7 +7,7 @@ import matplotlib.pyplot as plt
 # TODO: Understand why there are errors with graphing extreme temp and drought
 
 # Load the EMDAT Excel file
-file_path = "../data/gpkgData/public_emdat_incl_hist_2025-02-22.xlsx"
+file_path = "../../data/gpkgData/public_emdat_incl_hist_2025-02-22.xlsx"
 df = pd.read_excel(file_path, engine="openpyxl")
 
 # Isolating each disaster
@@ -19,11 +16,9 @@ storms_df = df[df["Disaster Type"] == "Storm"].dropna(subset=["Latitude", "Longi
 earthquakes_df = df[df["Disaster Type"] == "Earthquake"].dropna(
     subset=["Latitude", "Longitude"]
 )
-# extreme_temp_df = df[df["Disaster Type"] == "Extreme temperature"].dropna(subset=["Latitude", "Longitude"])
 volcanos_df = df[df["Disaster Type"] == "Volcanic activity"].dropna(
     subset=["Latitude", "Longitude"]
 )
-# drought_df = df[df["Disaster Type"] == "Drought"].dropna(subset=["Latitude", "Longitude"])
 
 # Convert each to a GeoDataFrame
 floods_gdf = gpd.GeoDataFrame(
@@ -41,14 +36,11 @@ earthquakes_gdf = gpd.GeoDataFrame(
     geometry=gpd.points_from_xy(earthquakes_df.Longitude, earthquakes_df.Latitude),
     crs="EPSG:4326",
 )
-# extreme_temp_df = gpd.GeoDataFrame(extreme_temp_df, geometry=gpd.points_from_xy(extreme_temp_df.Longitude, extreme_temp_df.Latitude), crs="EPSG:4326")
-volcanos_df = gpd.GeoDataFrame(
+volcanos_gdf = gpd.GeoDataFrame(
     volcanos_df,
     geometry=gpd.points_from_xy(volcanos_df.Longitude, volcanos_df.Latitude),
     crs="EPSG:4326",
 )
-# drought_df = gpd.GeoDataFrame(drought_df, geometry=gpd.points_from_xy(drought_df.Longitude, drought_df.Latitude), crs="EPSG:4326")
-
 
 # Load world map
 world = gpd.read_file(geodatasets.get_path("naturalearth.land"))
@@ -57,16 +49,20 @@ world = gpd.read_file(geodatasets.get_path("naturalearth.land"))
 fig, ax = plt.subplots(figsize=(12, 8))
 world.plot(ax=ax, color="#93E9BE", edgecolor="white")
 
-# Plot disasters using GeoDataFrames, not DataFrames**
-floods_gdf.plot(ax=ax, color="#1e56ff", markersize=10, alpha=0.6, label="Floods")
-storms_gdf.plot(ax=ax, color="#708090", markersize=10, alpha=0.6, label="Storms")
-earthquakes_gdf.plot(
-    ax=ax, color="#D2691E", markersize=10, alpha=0.6, label="Earthquakes"
-)
-# extreme_temp_df.plot(ax=ax, color="#FF0000", markersize=10, alpha=0.6, label="Extreme Temperatures")
-volcanos_df.plot(ax=ax, color="#FC4508", markersize=10, alpha=0.6, label="Volcanoes")
-# drought_df.plot(ax=ax, color="#DAA520", markersize=10, alpha=0.6, label="Droughts")
+# Plot disasters using GeoDataFrames
+if not floods_gdf.empty:
+    floods_gdf.plot(ax=ax, color="#1e56ff", markersize=10, alpha=0.6, label="Floods")
 
+if not storms_gdf.empty:
+    storms_gdf.plot(ax=ax, color="#708090", markersize=10, alpha=0.6, label="Storms")
+
+if not earthquakes_gdf.empty:
+    earthquakes_gdf.plot(
+        ax=ax, color="#D2691E", markersize=10, alpha=0.6, label="Earthquakes"
+    )
+
+if not volcanos_gdf.empty:
+    volcanos_gdf.plot(ax=ax, color="#FC4508", markersize=10, alpha=0.6, label="Volcanoes")
 
 # Add title and legend
 plt.title("Disaster Locations from EMDAT")
