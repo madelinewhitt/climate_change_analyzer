@@ -1,17 +1,10 @@
 from data_processor import load_disaster
-from prep import model
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
-
-
-# df = load_disaster(
-#     "Earthquake",
-#     ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"],
-# )
 
 
 def prep(df):
@@ -43,9 +36,10 @@ def prep(df):
     mse = mean_squared_error(y_test, y_pred)
 
     print(f"Mean Squared Error: {mse}")
+    return model
 
 
-def pred(df):
+def pred(df, model):
 
     future_years = np.arange(2025, 2035)
     future_months = np.tile(np.arange(1, 13), len(future_years))
@@ -71,6 +65,7 @@ def pred(df):
     print(future_df["Start Year"].value_counts())
 
     print(future_df.head())
+    return future_df
 
 
 def vis(future_df):
@@ -88,12 +83,11 @@ def vis(future_df):
     plt.show()
 
 
-if __name__ == "main":
-    print("main")
+if __name__ == "__main__":
     df = load_disaster(
         "Earthquake",
         ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"],
     )
-    prep(df)
-    future_df = pred(df)
+    model = prep(df)
+    future_df = pred(df, model)
     vis(future_df)

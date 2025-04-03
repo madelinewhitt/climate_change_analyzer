@@ -5,7 +5,7 @@ from sklearn.metrics import mean_squared_error
 import pandas as pd
 import numpy as np
 
-# df = pd.read_csv("earthquakesOnlyFP.csv")
+# df = pd.read_csv("../data/earthquakesOnlyFP.csv")
 # earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
 
 df = load_disaster(
