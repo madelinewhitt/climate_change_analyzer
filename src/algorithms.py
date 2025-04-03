@@ -8,10 +8,6 @@ import matplotlib.pyplot as plt
 
 
 def prep(df):
-
-    # df = pd.read_csv("earthquakesOnlyFP.csv")
-    # earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
-
     df = df.dropna(axis=1, how="all")
 
     features = ["Start Year", "Start Month", "Latitude", "Longitude"]
@@ -40,7 +36,6 @@ def prep(df):
 
 
 def pred(df, model):
-
     future_years = np.arange(2025, 2035)
     future_months = np.tile(np.arange(1, 13), len(future_years))
 
@@ -68,7 +63,7 @@ def pred(df, model):
     return future_df
 
 
-def vis(future_df):
+def vis(future_df, dis_type):
     plt.scatter(
         future_df["Longitude"],
         future_df["Latitude"],
@@ -78,16 +73,18 @@ def vis(future_df):
     )
     plt.xlabel("Longitude")
     plt.ylabel("Latitude")
-    plt.title("Predicted Earthquake Magnitudes (Next 10 Years)")
+    plt.title(f"Predicted {dis_type} Magnitudes (Next 10 Years)")
     plt.colorbar(label="Predicted Magnitude")
     plt.show()
 
 
 if __name__ == "__main__":
+    disaster_type = "Flood"
     df = load_disaster(
-        "Earthquake",
+        disaster_type,
         ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"],
     )
+    print(f"running for {disaster_type}")
     model = prep(df)
     future_df = pred(df, model)
-    vis(future_df)
+    vis(future_df, disaster_type)
