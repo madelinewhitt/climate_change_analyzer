@@ -1,10 +1,14 @@
+from data_processor import load_disaster
 import numpy as np
 import pandas as pd
 from prep import model
 
 
 earthquakesOnlyFP = "../data/earthquakesOnlyFP.csv"
-df = pd.read_csv(earthquakesOnlyFP)
+# df = pd.read_csv(earthquakesOnlyFP)
+df = load_disaster(
+    "Earthquake", ["Start Year", "Start Month", "Latitude", "Longitude", "Magnitude"]
+)
 
 future_years = np.arange(2025, 2035)
 future_months = np.tile(np.arange(1, 13), len(future_years))
