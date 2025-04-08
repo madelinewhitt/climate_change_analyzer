@@ -4,6 +4,9 @@ from statsmodels.tsa.stattools import adfuller
 from scipy.stats import zscore
 from data_processor import load_disaster
 
+
+""" Performs the Augmented Dickey-Fuller test for stationarity.
+If the series is constant the test is skipped. Otherwise the ADF test is applied. """
 def adf_test(series):
     if len(series.unique()) == 1:
         print("Series is constant. Skipping ADF test.")
@@ -11,10 +14,14 @@ def adf_test(series):
     result = adfuller(series)
     return result[0], result[1]
 
+""" Detects anomalies in the specified column of a DataFrame using the Z-score method.
+Values with a Z-score greater than 4 are considered anomalies. """
 def detect_anomalies_zscore(df, column, threshold=4):
     z_scores = zscore(df[column].fillna(0))
     return df[np.abs(z_scores) > threshold]
 
+""" Detects anomalies using the Interquartile Range (IQR) method. Data points outside the 
+defined range based on Q1, Q3, and IQR are flagged as anomalies. """
 def detect_anomalies_iqr(df, column, multiplier=4):
     Q1 = df[column].quantile(0.25)
     Q3 = df[column].quantile(0.75)
@@ -40,24 +47,20 @@ def main():
     all_predicted = []
     
     predicted_df = pd.read_csv(predicted_data_path)
-    # Assuming the 'Total Deaths' column exists in predicted_df and filling NaN values with 0
-    predicted_df["Total Deaths"] = predicted_df["Total Deaths"].fillna(0)
     
     for disaster_type in disaster_types:
-        # Load the original disaster data
         original_df = load_disaster(
             disaster_type,
             ["Disaster Type", "Start Year", "Start Month", "Latitude", "Longitude", "Total Deaths"]
         )
-        # Append to the respective lists
+        
         all_original.append(original_df)
         all_predicted.append(predicted_df)
     
-    # Combine data from all disaster types
+
     combined_original_df = pd.concat(all_original, ignore_index=True)
     combined_predicted_df = pd.concat(all_predicted, ignore_index=True)
 
-    # Check required columns
     for df in [combined_original_df, combined_predicted_df]:
         if "Start Year" not in df or "Total Deaths" not in df:
             raise ValueError("Datasets must contain 'Start Year' and 'Total Deaths' columns.")
@@ -90,7 +93,6 @@ def main():
         anomalies_iqr_predicted
     ]).drop_duplicates()
 
-    # Save anomalies to CSV
     all_anomalies.to_csv('../data/anomalies.csv', index=False)
 
 if __name__ == "__main__":
