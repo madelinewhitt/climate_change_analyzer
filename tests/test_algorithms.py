@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-import src.algorithms as algorithms
+from src.algorithms import prep, pred, vis
 
 
 class TestAlgorithms(unittest.TestCase):
@@ -15,7 +15,7 @@ class TestAlgorithms(unittest.TestCase):
         df = pd.DataFrame(
             data,
         )
-        result = algorithms.prep(df)
+        result = prep(df)
         self.assertIsNotNone(result)
         return result
 
