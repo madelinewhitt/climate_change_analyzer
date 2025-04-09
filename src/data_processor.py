@@ -182,8 +182,9 @@ def updateCoords(df):
 def load_disaster(type, cols=None):
     if cols is None:
         cols = []
-    df = pd.read_csv("./data/NaturalDisasters1900-2025WithCoords.csv")
+    df = pd.read_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
     df = df[df["Disaster Type"] == type]
+    df["Total Deaths"] = df["Total Deaths"].fillna(0)
     new_df = df[cols]
     return new_df
 
@@ -195,7 +196,7 @@ def describe_data():
 
 if __name__ == "__main__":
     # anything that is not a function will be here
-    file_name = "../data/NaturalDisasters1900-2025.csv"
+    file_name = "../data/NaturalDisastersOnly.csv"
 
     menu = f"""
     Data Processor - raw file - {file_name} 

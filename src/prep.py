@@ -29,11 +29,24 @@ X_train, X_test, y_train, y_test = train_test_split(
     df[features], df[target], test_size=0.2, random_state=42
 )
 
-model = xgb.XGBRegressor(n_estimators=400, learning_rate=0.03)
+models = {}
+for target in targets:
+    y_train = df.loc[X_train.index, target]
+    y_test = df.loc[X_test.index, target]
 
-model.fit(X_train, y_train)
+    model = xgb.XGBRegressor(n_estimators=400, learning_rate=0.03)
+    model.fit(X_train, y_train)
+    y_pred = model.predict(X_test)
+    mse = mean_squared_error(y_test, y_pred)
+    print(f"MSE for {target}: {mse}")
 
-y_pred = model.predict(X_test)
+    models[target] = model
+
+# Export as model_bundle
+from types import SimpleNamespace
+model_bundle = SimpleNamespace(**models)
+
+
 
 mse = mean_squared_error(y_test, y_pred)
 

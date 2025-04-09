@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-import src.algorithms as algorithms
+from src.algorithms import prep, pred, vis
 
 
 class TestAlgorithms(unittest.TestCase):
@@ -10,12 +10,12 @@ class TestAlgorithms(unittest.TestCase):
             "Start Month": [1, 2, 3],
             "Latitude": [34.05, 36.16, 40.71],
             "Longitude": [-118.25, -115.15, -74.00],
-            "Magnitude": [5.0, 6.0, 7.0],
+            "Total Deaths": [100, 200, 300],
         }
         df = pd.DataFrame(
             data,
         )
-        result = algorithms.prep(df)
+        result = prep(df)
         self.assertIsNotNone(result)
         return result
 
@@ -25,12 +25,13 @@ class TestAlgorithms(unittest.TestCase):
             "Start Month": [1, 2, 3],
             "Latitude": [34.05, 36.16, 40.71],
             "Longitude": [-118.25, -115.15, -74.00],
-            "Magnitude": [5.0, 6.0, 7.0],
+            "Total Deaths": [100, 200, 300],
         }
         df = pd.DataFrame(
             data,
         )
         model = self.test_prep()
+        future_df = pred(df, model)
 
     def test_vis(self):
         # Add your test case for the vis function
