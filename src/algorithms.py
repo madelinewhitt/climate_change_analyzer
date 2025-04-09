@@ -1,4 +1,4 @@
-from data_processor import load_disaster
+from src.data_processor import load_disaster
 import xgboost as xgb
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error
@@ -45,7 +45,7 @@ def pred(df, model):
     future_longitudes = np.random.uniform(
         df["Longitude"].min(), df["Longitude"].max(), len(future_years) * 12
     )
-    
+
     future_latitudes = np.round(future_latitudes, 6)
     future_longitudes = np.round(future_longitudes, 6)
 

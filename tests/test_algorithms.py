@@ -10,7 +10,7 @@ class TestAlgorithms(unittest.TestCase):
             "Start Month": [1, 2, 3],
             "Latitude": [34.05, 36.16, 40.71],
             "Longitude": [-118.25, -115.15, -74.00],
-            "Magnitude": [5.0, 6.0, 7.0],
+            "Total Deaths": [100, 200, 300],
         }
         df = pd.DataFrame(
             data,
@@ -25,12 +25,13 @@ class TestAlgorithms(unittest.TestCase):
             "Start Month": [1, 2, 3],
             "Latitude": [34.05, 36.16, 40.71],
             "Longitude": [-118.25, -115.15, -74.00],
-            "Magnitude": [5.0, 6.0, 7.0],
+            "Total Deaths": [100, 200, 300],
         }
         df = pd.DataFrame(
             data,
         )
         model = self.test_prep()
+        future_df = pred(df, model)
 
     def test_vis(self):
         # Add your test case for the vis function
