@@ -39,8 +39,6 @@ future_df = pd.DataFrame(input_rows)
 
 # Synthetic inputs
 
-
-
 # Predict all 4 targets
 for target in ['Start Year', 'Latitude', 'Longitude', 'Magnitude']:
     #future_df[f'Predicted {target}'] = model_bundle.__dict__[target].predict(future_df)

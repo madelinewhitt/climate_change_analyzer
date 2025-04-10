@@ -1,5 +1,0 @@
-Tweaks the data should have
-1. Disaster Magnitude 
-    - magnitude right now is spread into two columns with 1 having the numeric value and the other having 
-    the "scale" or the metric, (eg. "Movement Magnitude" for earthquakes etc.)
-    - Some entries only have the metric or the scale and I want to 
