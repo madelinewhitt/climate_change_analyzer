@@ -22,8 +22,9 @@ def checkCoords(df):
     # we expect len(df)
     for item in df.iterrows():
         row = item[1]
-        lonExist = row["Longitude"] != 0
-        latExist = row["Latitude"] != 0
+        # print(row.isna()["Longitude"], row["Longitude"], np.nan)
+        lonExist = not row.isna()["Longitude"]
+        latExist = not row.isna()["Latitude"]
         if lonExist and latExist:
             pairCount += 1
         elif lonExist:
@@ -206,26 +207,12 @@ def load_disaster(
 
 if __name__ == "__main__":
     # anything that is not a function will be here
-    file_name = "../data/NaturalDisastersOnly.csv"
+    file_name = "../data/NaturalDisastersEmDat1900-2025.csv"
 
-    menu = f"""
-    Data Processor - raw file - {file_name} 
-    1. List data
-    2. Show data columns
-    3. Check how many entries have coordinates
-    4. 
-
-    """
     df = getData(file_name)
 
-    print(checkCoords(df))
+    print(f"Before {checkCoords(df)}")
+    updateCoords(df)
+    print(f"After {checkCoords(df)}")
 
-    # cdf = getData("../data/NaturalDisasters1900-2025WithCoords.csv")
-    # updateCoords(df,False)
-    # while True:
-    #
-    #     print(menu)
-    #
-
-    # print(f"Before {checkCoords(df)}")
-    # print(f"After {checkCoords(cdf)}")
+    df.to_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
