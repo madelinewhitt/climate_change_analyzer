@@ -1,9 +1,16 @@
+""" This code analyzes disaster-related data by performing the following tasks:
+1. Conducts an Augmented Dickey-Fuller (ADF) test for stationarity on the 'Total Deaths' column.
+2. Detects anomalies using two methods:
+   - Z-score method (values with a Z-score > 4 are considered anomalies).
+   - Interquartile Range (IQR) method (values outside the defined IQR range are flagged).
+3. Labels anomalies with the corresponding 'Disaster Type' and ensures data integrity by copying the anomalies DataFrame.
+4. Saves the combined anomalies (from both original and predicted data) to a CSV file. """
+
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.stattools import adfuller
 from scipy.stats import zscore
 from data_processor import load_disaster
-
 
 """ Performs the Augmented Dickey-Fuller test for stationarity.
 If the series is constant the test is skipped. Otherwise the ADF test is applied. """
