@@ -1,9 +1,22 @@
 import unittest
 import pandas as pd
 from src.algorithms import prep, pred, vis
+from src.clust import distance_to_line
 
 
 class TestAlgorithms(unittest.TestCase):
+    """Test class for distance_to_line. Testing that the correct distance is returned."""
+
+    def test_distance_to_line(self):
+        p = pd.Series([1, 2])
+        a = pd.Series([0, 0])
+        b = pd.Series([3, 3])
+        result = distance_to_line(p, a, b)
+        expected_result = 0.7071067811865475
+        self.assertAlmostEqual(result, expected_result)
+
+    """Test case for the prep function. Testing that the model is not None and that the MSE is printed."""
+
     def test_prep(self):
         data = {
             "Start Year": [2020, 2021, 2022],
@@ -19,6 +32,8 @@ class TestAlgorithms(unittest.TestCase):
         self.assertIsNotNone(result)
         return result
 
+    """Test case for the pred function. Testing that the future_df is not None and that the MSE is printed."""
+
     def test_pred(self):
         data = {
             "Start Year": [2020, 2021, 2022],
@@ -32,10 +47,7 @@ class TestAlgorithms(unittest.TestCase):
         )
         model = self.test_prep()
         future_df = pred(df, model)
-
-    def test_vis(self):
-        # Add your test case for the vis function
-        pass
+        self.assertIsNotNone(future_df)
 
 
 if __name__ == "main":
