@@ -84,7 +84,6 @@ if __name__ == "__main__":
         "Flood",
         "Storm",
         "Drought",
-        "Air",
         "Volcanic activity",
         "Wildfire",
     ]
@@ -101,8 +100,7 @@ if __name__ == "__main__":
             ],
         )
         print(f"running for {disType}")
-        model = prep(df)
-        future_df = pred(df, model)
+        future_df = pred(df)
         # vis(future_df, disType)
         dfs.append(df)
 
