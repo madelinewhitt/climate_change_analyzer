@@ -16,10 +16,9 @@ def checkCoords(df):
     # Latitude 23
     # we expect len(df)
     for item in df.iterrows():
-        # print(row[1]['Latitude'])
         row = item[1]
-        lonExist = row["Longitude"] > 0
-        latExist = row["Latitude"] > 0
+        lonExist = row["Longitude"] != 0
+        latExist = row["Latitude"] != 0
         if lonExist and latExist:
             pairCount += 1
         elif lonExist:
@@ -179,19 +178,16 @@ def updateCoords(df):
     return df
 
 
-def load_disaster(type, cols=None):
+def load_disaster(
+    type, cols=None, file="../data/NaturalDisasters1900-2025WithCoords.csv"
+):
     if cols is None:
         cols = []
-    df = pd.read_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
+    df = pd.read_csv(file)
     df = df[df["Disaster Type"] == type]
     df["Total Deaths"] = df["Total Deaths"].fillna(0)
     new_df = df[cols]
     return new_df
-
-
-def describe_data():
-    df = pd.read_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
-    print(df.describe())
 
 
 if __name__ == "__main__":
@@ -208,12 +204,14 @@ if __name__ == "__main__":
     """
     df = getData(file_name)
 
-    cdf = getData("../data/NaturalDisasters1900-2025WithCoords.csv")
+    print(checkCoords(df))
+
+    # cdf = getData("../data/NaturalDisasters1900-2025WithCoords.csv")
     # updateCoords(df,False)
     # while True:
     #
     #     print(menu)
     #
 
-    print(f"Before {checkCoords(df)}")
-    print(f"After {checkCoords(cdf)}")
+    # print(f"Before {checkCoords(df)}")
+    # print(f"After {checkCoords(cdf)}")
