@@ -31,7 +31,7 @@ def detect_anomalies_iqr(df, column, multiplier=4):
         (df[column] > (Q3 + multiplier * IQR))
     ]
 
-def main():
+if __name__ == "__main__":
     predicted_data_path = "../data/predictions.csv"
     disaster_types = [
         "Earthquake",
@@ -95,5 +95,3 @@ def main():
 
     all_anomalies.to_csv('../data/anomalies.csv', index=False)
 
-if __name__ == "__main__":
-    main()
