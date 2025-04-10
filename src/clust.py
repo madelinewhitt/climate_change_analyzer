@@ -1,4 +1,4 @@
-from src.data_processor import load_disaster
+from data_processor import load_disaster
 import pandas as pd
 import numpy as np
 from sklearn.cluster import KMeans
