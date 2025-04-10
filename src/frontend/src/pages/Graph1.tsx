@@ -58,6 +58,8 @@ const Graph1: React.FC = () => {
                         <option value="storm">Storm</option>
                         <option value="flood">Flood</option>
                         <option value="volcanic">Volcanic Activity</option>
+                        <option value="death">Death Frequency</option>
+
                     </select>
                 </div>
             </div>
