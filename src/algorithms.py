@@ -93,7 +93,6 @@ if __name__ == "__main__":
         "Flood",
         "Storm",
         "Drought",
-        "Air",
         "Volcanic activity",
         "Wildfire",
     ]
