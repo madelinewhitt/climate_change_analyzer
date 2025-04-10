@@ -1,6 +1,11 @@
-#source venv/bin/activate
+deactivate
+source venv/bin/activate
+pip install -r requirements.txt
 export PYTHONPATH=src
-python3 src/data_processor.py
-python3 src/algorithms.py #Isa needs to fix this
-python3 src/time_series.py 
+cd src
+python3 data_processor.py
+python3 algorithms.py #Isa needs to fix this
+python3 time_series.py 
 #Madeline python3 src/visualizer.py
+cd ..
+python3 -m unittest
