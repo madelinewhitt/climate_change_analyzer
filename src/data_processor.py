@@ -1,9 +1,14 @@
 import pandas as pd
 
+"""Function to get the data from a csv to improve readability"""
+
 
 def getData(file_name):
     df = pd.read_csv(file_name, encoding="ISO-8859-1")
     return df
+
+
+"""Function to check how many entries have coordinates"""
 
 
 def checkCoords(df):
@@ -16,10 +21,10 @@ def checkCoords(df):
     # Latitude 23
     # we expect len(df)
     for item in df.iterrows():
-        # print(row[1]['Latitude'])
         row = item[1]
-        lonExist = row["Longitude"] > 0
-        latExist = row["Latitude"] > 0
+        # print(row.isna()["Longitude"], row["Longitude"], np.nan)
+        lonExist = not row.isna()["Longitude"]
+        latExist = not row.isna()["Latitude"]
         if lonExist and latExist:
             pairCount += 1
         elif lonExist:
@@ -33,6 +38,9 @@ def checkCoords(df):
     lats = ("Only Lat", onlyLat)
     none = ("Nothing", nothing)
     return (pairs, longs, lats, none)
+
+
+"""Function to get the coordinates of a country from a dataframe"""
 
 
 def getCountry(countrydf, country):
@@ -149,6 +157,9 @@ def getCountry(countrydf, country):
     return (0, 0)
 
 
+"""Function to update the coordinates of a dataframe"""
+
+
 def updateCoords(df):
     countrydf = getData("../data/CountryData.csv")
 
@@ -179,30 +190,29 @@ def updateCoords(df):
     return df
 
 
-def process_earthquakes(df):
-    pass
+"""Function to load the data of a specific disaster type"""
+
+
+def load_disaster(
+    type, cols=None, file="../data/NaturalDisasters1900-2025WithCoords.csv"
+):
+    if cols is None:
+        cols = []
+    df = pd.read_csv(file)
+    df = df[df["Disaster Type"] == type]
+    df["Total Deaths"] = df["Total Deaths"].fillna(0)
+    new_df = df[cols]
+    return new_df
 
 
 if __name__ == "__main__":
     # anything that is not a function will be here
-    file_name = "../data/NaturalDisasters1900-2025.csv"
+    file_name = "../data/NaturalDisastersEmDat1900-2025.csv"
 
-    menu = f"""
-    Data Processor - raw file - {file_name} 
-    1. List data
-    2. Show data columns
-    3. Check how many entries have coordinates
-    4. 
-
-    """
     df = getData(file_name)
 
-    cdf = getData("../data/NaturalDisasters1900-2025WithCoords.csv")
-    # updateCoords(df,False)
-    # while True:
-    #
-    #     print(menu)
-    #
-
     print(f"Before {checkCoords(df)}")
-    print(f"After {checkCoords(cdf)}")
+    updateCoords(df)
+    print(f"After {checkCoords(df)}")
+
+    df.to_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
