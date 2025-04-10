@@ -1,9 +1,14 @@
 import pandas as pd
 
+"""Function to get the data from a csv to improve readability"""
+
 
 def getData(file_name):
     df = pd.read_csv(file_name, encoding="ISO-8859-1")
     return df
+
+
+"""Function to check how many entries have coordinates"""
 
 
 def checkCoords(df):
@@ -32,6 +37,9 @@ def checkCoords(df):
     lats = ("Only Lat", onlyLat)
     none = ("Nothing", nothing)
     return (pairs, longs, lats, none)
+
+
+"""Function to get the coordinates of a country from a dataframe"""
 
 
 def getCountry(countrydf, country):
@@ -148,6 +156,9 @@ def getCountry(countrydf, country):
     return (0, 0)
 
 
+"""Function to update the coordinates of a dataframe"""
+
+
 def updateCoords(df):
     countrydf = getData("../data/CountryData.csv")
 
@@ -176,6 +187,9 @@ def updateCoords(df):
 
     df.to_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
     return df
+
+
+"""Function to load the data of a specific disaster type"""
 
 
 def load_disaster(

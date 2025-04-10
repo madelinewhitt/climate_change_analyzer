@@ -9,6 +9,7 @@ TEST_FILE_PATH = os.path.join(
 
 
 class Test_Data_Processor(unittest.TestCase):
+    """Test case for the CheckCoords function. Testing that the proper number of coordinate pairs are found."""
 
     def test_CheckCoords(self):
         countrydata = {
@@ -31,6 +32,8 @@ class Test_Data_Processor(unittest.TestCase):
 
         val = (("Pairs:", 3), ("Only Long", 0), ("Only Lat", 1), ("Nothing", 0))
         self.assertEqual(checkCoords(countrydf), val)
+
+    """Test case for GetCountry function. Testing that the correct coordinates are returned for a given country."""
 
     def test_GetCountry(self):
         # if country == "Saint Barthélemy":
@@ -57,6 +60,8 @@ class Test_Data_Processor(unittest.TestCase):
             res = getCountry(countrydf, country)
             self.assertEqual(row["Longitude"], res[1])
             self.assertEqual(row["Latitude"], res[0])
+
+    """Test case for the updateCoords function. Testing that the coordinates are updated correctly."""
 
     def test_load_disaster(self):
         df = load_disaster(
