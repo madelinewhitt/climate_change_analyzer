@@ -1,9 +1,16 @@
+""" This code analyzes disaster-related data by performing the following tasks:
+1. Conducts an Augmented Dickey-Fuller (ADF) test for stationarity on the 'Total Deaths' column.
+2. Detects anomalies using two methods:
+   - Z-score method (values with a Z-score > 4 are considered anomalies).
+   - Interquartile Range (IQR) method (values outside the defined IQR range are flagged).
+3. Labels anomalies with the corresponding 'Disaster Type' and ensures data integrity by copying the anomalies DataFrame.
+4. Saves the combined anomalies (from both original and predicted data) to a CSV file. """
+
 import pandas as pd
 import numpy as np
 from statsmodels.tsa.stattools import adfuller
 from scipy.stats import zscore
 from data_processor import load_disaster
-
 
 """ Performs the Augmented Dickey-Fuller test for stationarity.
 If the series is constant the test is skipped. Otherwise the ADF test is applied. """
@@ -31,16 +38,20 @@ def detect_anomalies_iqr(df, column, multiplier=4):
         (df[column] > (Q3 + multiplier * IQR))
     ]
 
+""" This function detects anomalies in a given dataframe using a specified anomaly detection method. 
+It ensures that the detected anomalies are copied to prevent unintended modifications to the original dataframe slice.
+Additionally, it retains the 'Disaster Type' for each anomaly by mapping it from the original dataframe. """
+def detect_and_label_anomalies(df, method, column, **kwargs):
+    anomalies = method(df, column, **kwargs)
+    anomalies = anomalies.copy()  # Ensure anomalies is a copy to avoid modifying the original slice
+    anomalies['Disaster Type'] = df.loc[anomalies.index, 'Disaster Type'].values  # Add disaster type to anomalies
+    return anomalies
+
+
 if __name__ == "__main__":
     predicted_data_path = "../data/predictions.csv"
     disaster_types = [
-        "Earthquake",
-        "Flood",
-        "Storm",
-        "Drought",
-        "Air",
-        "Volcanic activity",
-        "Wildfire",
+        "Earthquake", "Flood", "Storm", "Drought", "Air", "Volcanic activity", "Wildfire"
     ]
 
     all_original = []
@@ -53,11 +64,9 @@ if __name__ == "__main__":
             disaster_type,
             ["Disaster Type", "Start Year", "Start Month", "Latitude", "Longitude", "Total Deaths"]
         )
-        
         all_original.append(original_df)
         all_predicted.append(predicted_df)
     
-
     combined_original_df = pd.concat(all_original, ignore_index=True)
     combined_predicted_df = pd.concat(all_predicted, ignore_index=True)
 
@@ -73,12 +82,6 @@ if __name__ == "__main__":
         print("The time series is likely", "non-stationary." if p_value > 0.05 else "stationary.")
 
     # Detect anomalies and retain disaster type
-    def detect_and_label_anomalies(df, method, column, **kwargs):
-        anomalies = method(df, column, **kwargs)
-        anomalies = anomalies.copy()  # Ensure anomalies is a copy to avoid modifying the original slice
-        anomalies['Disaster Type'] = df.loc[anomalies.index, 'Disaster Type'].values  # Add disaster type to anomalies
-        return anomalies
-
     anomalies_zscore_original = detect_and_label_anomalies(combined_original_df, detect_anomalies_zscore, 'Total Deaths')
     anomalies_iqr_original = detect_and_label_anomalies(combined_original_df, detect_anomalies_iqr, 'Total Deaths')
 
