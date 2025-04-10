@@ -3,6 +3,13 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#data
+data/NaturalDisasters1900-2025WithCoords.csv
+data/anomalies.csv
+data/predictions.csv
+data/multipredictions.csv
+
+
 # C extensions
 *.so
 
