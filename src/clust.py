@@ -100,7 +100,7 @@ if __name__ == "__main__":
     for disasterType in disaster_types:
         model = "multi"
         print(f"running for {disasterType}")
-        df = pd.read_csv("../data/multipredictions.csv")
+        df = pd.read_csv("../data/generated_data/multipredictions.csv")
         df = df[df["Disaster Type"]==disasterType]
         features = df[["Latitude", "Longitude", "Total Deaths"]]
         scaled_features = scale(features)
