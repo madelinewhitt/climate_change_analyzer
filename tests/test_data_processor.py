@@ -5,7 +5,7 @@ import pandas as pd
 from src.data_processor import getCountry, load_disaster, updateCoords, checkCoords
 
 TEST_FILE_PATH = os.path.join(
-    os.path.dirname(__file__), "../data/NaturalDisasters1900-2025WithCoords.csv"
+    os.path.dirname(__file__), "../data/generated_data/NaturalDisasters1900-2025WithCoords.csv"
 )
 
 

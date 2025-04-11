@@ -4,12 +4,6 @@ import numpy as np
 from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 import matplotlib.pyplot as plt
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
-
-# from algorithms import future_df, disaster_type
-
-disaster_type = "Earthquake"
 
 
 def distance_to_line(p, a, b):
@@ -24,8 +18,7 @@ def scale(features):
 
 
 def elbow_method(scaled_features):
-    # Scale features
-
+  
     # Elbow method to determine optimal k
     inertia = []
     k_range = range(1, 11)
@@ -53,7 +46,7 @@ def final_clustering(optimal_k, df):
     df["Cluster"] = kmeans_final.fit_predict(scaled_features)
 
 
-def elbow_curve(optimal_k, x, y):
+def elbow_curve(optimal_k, x, y, disaster_type,model):
     plt.figure(figsize=(8, 5))
     plt.plot(x, y, marker="o", label="Inertia")
     plt.axvline(optimal_k, color="r", linestyle="--", label=f"Optimal k = {optimal_k}")
@@ -63,10 +56,11 @@ def elbow_curve(optimal_k, x, y):
     plt.legend()
     plt.grid(True)
     plt.tight_layout()
-    plt.show()
+    #plt.show()
+    plt.savefig(f"../data/generated_data/images/{model}_elbow_curve_{disaster_type}.png")
 
 
-def clustered_event(df):
+def clustered_event(df, disaster_type, model):
     plt.figure(figsize=(10, 6))
     scatter = plt.scatter(
         df["Longitude"],
@@ -82,44 +76,52 @@ def clustered_event(df):
     plt.colorbar(label="Cluster")
     plt.grid(True)
     plt.tight_layout()
-    plt.show()
+  #  plt.show()
+    plt.savefig(f"../data/generated_data/images/{model}_cluster_map_{disaster_type}.png")
 
 
-def clustered_on_map(df):
-    plt.figure(figsize=(14, 7))
-    ax = plt.axes(projection=ccrs.PlateCarree())
-    ax.set_global()
-    ax.coastlines()
-    ax.add_feature(cfeature.BORDERS, linestyle=":")
-
-    # Scatter plot of clustered earthquakes
-    scatter = ax.scatter(
-        df["Longitude"],
-        df["Latitude"],
-        c=df["Cluster"],
-        s=df["Total Deaths"] / 10,
-        cmap="tab10",
-        edgecolor="k",
-        alpha=0.7,
-        transform=ccrs.PlateCarree(),
-    )
-
-    plt.title("Clustered Earthquake Predictions on World Map")
-    plt.colorbar(scatter, label="Cluster")
-    plt.show()
 
 
 if __name__ == "__main__":
 
-    # df = future_df
-    print(f"running for {disaster_type}")
-    df = pd.read_csv("../data/multipredictions.csv")
 
-    features = df[["Latitude", "Longitude", "Total Deaths"]]
+    disaster_types = [
+        "Earthquake",
+        "Flood",
+        "Storm",
+        "Drought",
+        "Volcanic activity",
+        "Wildfire",
+    ]
 
-    scaled_features = scale(features)
-    optimal_k, x, y = elbow_method(scaled_features)
-    final_clustering(optimal_k, df)
-    elbow_curve(optimal_k, x, y)
-    clustered_event(df)
-    clustered_on_map(df)
+#    df = pd.read_csv("../data/multipredictions.csv")
+   # features = df[["Latitude", "Longitude", "Total Deaths"]]
+
+    for disasterType in disaster_types:
+        model = "multi"
+        print(f"running for {disasterType}")
+        df = pd.read_csv("../data/generated_data/multipredictions.csv")
+        df = df[df["Disaster Type"]==disasterType]
+        features = df[["Latitude", "Longitude", "Total Deaths"]]
+        scaled_features = scale(features)
+        optimal_k, x, y = elbow_method(scaled_features)
+        final_clustering(optimal_k, df)
+        elbow_curve(optimal_k, x, y, disasterType,model)
+        clustered_event(df, disasterType, model)
+
+    for disasterType in disaster_types:
+        model = "single"
+        print(f"running for {disasterType}")
+        df = pd.read_csv("../data/generated_data/predictions.csv")
+        df = df[df["Disaster Type"]==disasterType]
+        features = df[["Latitude", "Longitude", "Total Deaths"]]
+        scaled_features = scale(features)
+        optimal_k, x, y = elbow_method(scaled_features)
+        final_clustering(optimal_k, df)
+        elbow_curve(optimal_k, x, y, disasterType,model)
+        clustered_event(df, disasterType, model)
+
+
+
+
+    

@@ -1,4 +1,3 @@
-
 # Climate Change Analyzer
 
 This project provides data processing and analytical tools for climate change data. It includes scripts for analyzing climate-related disasters, generating predictions, and running various algorithms. The setup and execution of the project can be automated using the `init.sh` script.

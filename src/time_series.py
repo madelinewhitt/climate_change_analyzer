@@ -69,8 +69,8 @@ def detect_anomalies_for_dataset(original_df, predicted_df, output_path):
     all_anomalies.to_csv(output_path, index=False)
 
 if __name__ == "__main__":
-    algorithms_path = "../data/predictions.csv"
-    multialgorithms_path = "../data/multipredictions.csv"
+    algorithms_path = "../data/generated_data/predictions.csv"
+    multialgorithms_path = "../data/generated_data/multipredictions.csv"
     
     disaster_types = [
         "Earthquake", "Flood", "Storm", "Drought", "Air", "Volcanic activity", "Wildfire"
@@ -108,5 +108,5 @@ if __name__ == "__main__":
         print("The time series is likely", "non-stationary." if p_value > 0.05 else "stationary.")
 
     # Generate two separate CSV files
-    detect_anomalies_for_dataset(combined_original_df, combined_algorithms_df, '../data/anomalies_algorithms.csv')
-    detect_anomalies_for_dataset(combined_original_df, combined_multialgorithms_df, '../data/anomalies_multialgorithms.csv')
+    detect_anomalies_for_dataset(combined_original_df, combined_algorithms_df, '../data/generated_data/anomalies_algorithms.csv')
+    detect_anomalies_for_dataset(combined_original_df, combined_multialgorithms_df, '../data/generated_data/anomalies_multialgorithms.csv')

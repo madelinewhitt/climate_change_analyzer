@@ -31,8 +31,7 @@ def prep(df):
     # model_bundle = SimpleNamespace(**models)
     return models
 
-
-def pred(df):
+def pred(df, disType):
     future_years = np.arange(2025, 2035)
     future_months = np.tile(np.arange(1, 13), len(future_years))
 
@@ -50,17 +49,25 @@ def pred(df):
             "Total Deaths": future_deaths,
         }
     )
+    
     models = prep(df)
+    
+    future_df = future_df[["Start Year", "Latitude", "Longitude", "Total Deaths"]]
+    
     for target in ["Latitude", "Longitude", "Total Deaths"]:
         input_features = ["Start Year", "Latitude", "Longitude", "Total Deaths"]
-        future_df[f"{target}"] = models[target].predict(future_df[input_features])
+        if target in models:
+            future_df[f"{target}"] = models[target].predict(future_df[input_features])
+
+    future_df["Disaster Type"] = disType
 
     future_df["Total Deaths"] = future_df["Total Deaths"].astype(int)
+
     future_df["Start Year"] = future_df["Start Year"].astype(int)
+
     future_df = future_df.dropna(subset=input_features)
+
     return future_df
-
-
 def vis(future_df, dis_type):
     plt.scatter(
         future_df["Longitude"],
@@ -78,7 +85,7 @@ def vis(future_df, dis_type):
 
 if __name__ == "__main__":
     dfs = []
-    csv_filename = f"../data/multipredictions.csv"
+    csv_filename = f"../data/generated_data/multipredictions.csv"
     disaster_types = [
         "Earthquake",
         "Flood",
@@ -100,9 +107,9 @@ if __name__ == "__main__":
             ],
         )
         print(f"running for {disType}")
-        future_df = pred(df)
+        future_df = pred(df, disType)
         # vis(future_df, disType)
-        dfs.append(df)
+        dfs.append(future_df)
 
     future_df = pd.concat(dfs, ignore_index=True)
     future_df.to_csv(csv_filename, index=False)
