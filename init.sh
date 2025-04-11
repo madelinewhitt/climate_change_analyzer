@@ -1,6 +1,7 @@
-deactivate
-source venv/bin/activate
-# pip install -r requirements.txt
+# deactivate
+# source venv/bin/activate
+# get into the venv
+pip install -r requirements.txt
 export PYTHONPATH=src
 cd src
 python3 data_processor.py

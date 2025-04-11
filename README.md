@@ -38,19 +38,15 @@ then make sure to follow these steps
         remove function that does other thing
         refactor structure of class
 
+### Running the app
+To run the app, first enter a virtual environment.
+Run:
+```bash
+python3 -m venv env
+```
+Then activate the virtual environment:
+```bash
+source env/bin/activate
+```
+Then run ```./init.sh``` in the root directory
 
-## INFO ON REQUIREMENTS.TXT
-This is a file where you can find the required dependencies
-
-there is no venv folder in the repo so this is the list of dependencies
-
-use the pip freeze command to find the packages installed in the venv
-
-these are required packages that make the project work
-
-While in a venv, do ```sh pip freeze > requirements.txt```
-to automatically
-
-
-Trello
-https://trello.com/b/4CCJTYPe/python-project
