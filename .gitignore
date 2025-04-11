@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 #data
-data/generatedData
+data/generated_data
 
 
 # C extensions
