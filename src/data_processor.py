@@ -186,7 +186,7 @@ def updateCoords(df):
             df.loc[item[0], "Latitude"] = coords[0]
             df.loc[item[0], "Longitude"] = coords[1]
 
-    df.to_csv("../data/generated_data/NaturalDisasters1900-2025WithCoords.csv")
+    df.to_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
     return df
 
 
@@ -194,7 +194,7 @@ def updateCoords(df):
 
 
 def load_disaster(
-    type, cols=None, file="../data/generated_data/NaturalDisasters1900-2025WithCoords.csv"
+    type, cols=None, file="../data/NaturalDisasters1900-2025WithCoords.csv"
 ):
     if cols is None:
         cols = []
@@ -215,4 +215,4 @@ if __name__ == "__main__":
     updateCoords(df)
     print(f"After {checkCoords(df)}")
 
-    df.to_csv("../data/generated_data/NaturalDisasters1900-2025WithCoords.csv")
+    df.to_csv("../data/NaturalDisasters1900-2025WithCoords.csv")
