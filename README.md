@@ -97,12 +97,12 @@ The project's directory structure should look like this:
 │   └── generated_data/
 │       └── images/
 ├── src/
+│   ├── frontend/
 │   ├── data_processor.py
 │   ├── algorithms.py
 │   ├── multi_algorithms.py
 │   ├── time_series.py
-│   ├── clust.py
-│   └── visualizer.py
+│   └── clust.py
 ├── requirements.txt
 ├── init.sh
 └── README.md
