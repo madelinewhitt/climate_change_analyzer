@@ -14,13 +14,13 @@ const App: React.FC = () => {
     <Router>
       <div className="app">
         <MenuBar />
-        <Routes>
-          <Route path="/" element={<><Home /></>} />
-          <Route path="/Graph1" element={<Graph1 />} />
-          <Route path="/Comparison" element={<Comparison />} />
-          <Route path="/Clustering" element={<ClusterComparison />} />
-          <Route path="/Anomalies" element={<Anomalies/>} />
-        </Routes>
+            <Routes>
+              <Route path="/" element={<><Home /></>} />
+              <Route path="/Graph1" element={<Graph1 />} />
+              <Route path="/Comparison" element={<Comparison />} />
+              <Route path="/Clustering" element={<ClusterComparison />} />
+              <Route path="/Anomalies" element={<Anomalies/>} />
+            </Routes>
         <Footer />
       </div>
     </Router>
