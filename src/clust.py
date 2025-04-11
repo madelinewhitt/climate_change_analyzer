@@ -113,7 +113,7 @@ if __name__ == "__main__":
 
     # df = future_df
     print(f"running for {disaster_type}")
-    df = pd.read_csv("../data/multipredictions.csv")
+    df = pd.read_csv("../data/generated_data/multipredictions.csv")
 
     features = df[["Latitude", "Longitude", "Total Deaths"]]
 

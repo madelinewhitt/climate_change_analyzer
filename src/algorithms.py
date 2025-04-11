@@ -87,7 +87,7 @@ def vis(future_df, dis_type):
 
 if __name__ == "__main__":
     dfs = []
-    csv_filename = f"../data/predictions.csv"
+    csv_filename = f"../data/generated_data/predictions.csv"
     disaster_types = [
         "Earthquake",
         "Flood",
@@ -112,7 +112,7 @@ if __name__ == "__main__":
         model = prep(df)
         future_df = pred(df, model)
         # vis(future_df, disType)
-        dfs.append(df)
+        dfs.append(future_df)
 
     future_df = pd.concat(dfs, ignore_index=True)
     future_df.to_csv(csv_filename, index=False)
