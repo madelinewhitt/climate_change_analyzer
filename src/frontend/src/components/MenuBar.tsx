@@ -12,25 +12,25 @@ const MenuBar: React.FC = () => {
             to="/graph1"
             className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-400"
           >
-            Maps
+            Interactive Maps
           </Link>
           <Link
-            to="/graph1"
+            to="/Comparison"
             className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-400"
           >
-            Cluster Graphing
+            Predicted Data
           </Link>
           <Link
-            to="/graph1"
+            to="/Clustering"
             className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-400"
           >
-            Algorithm Comparison
+            Clustering
           </Link>
           <Link
-            to="report"
+            to="/Anomalies"
             className="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-800 focus:outline-none focus:ring-2 focus:ring-green-400"
           >
-            Project Report
+            Anomalies
           </Link>
         </div>
       </div>
