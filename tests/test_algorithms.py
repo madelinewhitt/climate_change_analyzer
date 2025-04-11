@@ -1,6 +1,6 @@
 import unittest
 import pandas as pd
-from src.algorithms import prep, pred, vis
+from src.algorithms import prep, pred
 from src.clust import distance_to_line
 
 
