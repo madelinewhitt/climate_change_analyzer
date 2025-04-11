@@ -35,7 +35,7 @@ def prep(df):
     return model
 
 
-def pred(df, model):
+def pred(df, model, disType):
     future_years = np.arange(2025, 2035)
     future_months = np.tile(np.arange(1, 13), len(future_years))
 
@@ -57,6 +57,8 @@ def pred(df, model):
             "Longitude": future_longitudes,
         }
     )
+    
+    future_df = future_df[["Start Year", "Start Month", "Latitude", "Longitude"]]
 
     future_df["Total Deaths"] = model.predict(future_df)
 
@@ -64,9 +66,11 @@ def pred(df, model):
 
     future_df["Total Deaths"] = future_df["Total Deaths"].astype(int)
 
-    print(future_df["Start Year"].value_counts())
+    future_df["Disaster Type"] = disType
 
+    print(future_df["Start Year"].value_counts())
     print(future_df.head())
+
     return future_df
 
 
@@ -110,7 +114,7 @@ if __name__ == "__main__":
         )
         print(f"running for {disType}")
         model = prep(df)
-        future_df = pred(df, model)
+        future_df = pred(df, model, disType)
         # vis(future_df, disType)
         dfs.append(future_df)
 

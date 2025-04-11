@@ -46,7 +46,7 @@ class TestAlgorithms(unittest.TestCase):
             data,
         )
         model = self.test_prep()
-        future_df = pred(df, model)
+        future_df = pred(df, model, "Earthquake")
         self.assertIsNotNone(future_df)
 
 
