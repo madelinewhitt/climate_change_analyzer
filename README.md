@@ -1,52 +1,109 @@
-# ClimateChangePythonApp
+# Climate Change Analyzer
 
-Write Up File: https://docs.google.com/document/d/13hmAmfA7NphLuhGfANLTmhc4CLwtUolRv2GushGzS78/edit?usp=sharing
+This project provides data processing and analytical tools for climate change data. It includes scripts for analyzing climate-related disasters, generating predictions, and running various algorithms. The setup and execution of the project can be automated using the `init.sh` script.
 
-## Setup
+## Setup Instructions
 
-Hello group, to get started on the project, make sure you clone the repo to a folder on your computer
-then make sure to follow these steps
+### 1. Set Up the Virtual Environment
 
-1. pull from branches
-        Before you start working on anything, make sure to pull from main and working, as well as ny branch you are directly working on.
-        This makes it much easier to handle conflicts and they are caught earlier than when it comes time to merge.
-2. Don't push to main
-        You will notice that pushing directly to main is not possible by design, to get your code to main, you must first push/merge with working.
-        And when that has no issues, we will push to main as the final product.
-        The working branch can also go by Production, and is used to represent a branch where work is still being done, not a working version
-3. git checkout your branch
-        The workflow that makes the most sense will be to create a branch for your addition, merge it into working, and
-        have everybody agree to update main with the updated version of working.
-        You don't have to stress to hard about following it, making some changes directly on working is no big deal, but
-        if you are doing something of substance that takes a while (more than 1 day) make sure to create a branch for it.
-4. Unit testing
-        This is a tedious but required part of this project so take it seriously.
-        It is not that bad and this is all you need to know.
-        A Unit test is going to consist of you writing test cases with known outcomes given a certain input, and asserting that the function does its job.
-        Unit tests are only for 3 categories of functions
-        - algorithms
-        - data_processor
-        - visualizer
-        We do not need any more tests than then number of functions in these categories.
-        When you work on these things MAKE SURE TO WRITE UNIT TESTS!!
-5. Descriptive commits
-        No real rules that you need to follow, all I ask is that we can understand what a commit does
-        some good practice ideas are
-        imperative commits
-        write commit in the imperative
-        add function that does thing
-        remove function that does other thing
-        refactor structure of class
+Before running the project, you need to set up the virtual environment. If you haven't created one already, do so by running the following:
 
-### Running the app
-To run the app, first enter a virtual environment.
-Run:
 ```bash
-python3 -m venv env
+python3 -m venv venv
 ```
-Then activate the virtual environment:
-```bash
-source env/bin/activate
-```
-Then run ```./init.sh``` in the root directory
 
+To activate the virtual environment, run:
+
+```bash
+source venv/bin/activate
+```
+
+When you're done working on the project, you can deactivate the virtual environment using:
+
+```bash
+deactivate
+```
+
+### 2. Install Dependencies
+
+Ensure all required Python packages are installed by running the following:
+
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Set Up the Environment
+
+To ensure the scripts can properly reference the `src` directory, set the `PYTHONPATH` environment variable:
+
+```bash
+export PYTHONPATH=src
+```
+
+### 4. Running the Project
+
+You have two options to run the project:
+
+#### Option 1: Running the Project Using `init.sh`
+
+You can automate the entire setup, execution, and testing process by using the `init.sh` script. This script will:
+
+- Set up the virtual environment
+- Install dependencies
+- Create necessary directories
+- Run all relevant Python scripts
+- Run unit tests to ensure everything works correctly
+
+To use `init.sh`, run the following command from the root project directory:
+
+```bash
+./init.sh
+```
+
+#### Option 2: Running the Scripts Manually
+
+Alternatively, you can manually run the scripts in the `src` directory for data processing and analysis. Navigate to the `src` directory and execute the processing and analysis scripts in order:
+
+```bash
+cd src
+python3 data_processor.py
+python3 algorithms.py
+python3 multi_algorithms.py
+python3 time_series.py
+python3 clust.py
+cd ..
+```
+
+### 5. Running Unit Tests
+
+To ensure that the scripts are functioning correctly, run the unit tests:
+
+```bash
+python3 -m unittest
+```
+
+### Notes
+
+- Ensure all dependencies in `requirements.txt` are installed before running the scripts.
+- The `init.sh` script automates the process of setting up and running the project. If you prefer manual execution, follow the instructions in Option 2.
+- The generated data will be stored in the `data/generated_data` directory, and images in the `data/generated_data/images` directory.
+
+### Directory Structure
+
+The project's directory structure should look like this:
+
+```
+├── data/
+│   └── generated_data/
+│       └── images/
+├── src/
+│   ├── data_processor.py
+│   ├── algorithms.py
+│   ├── multi_algorithms.py
+│   ├── time_series.py
+│   ├── clust.py
+│   └── visualizer.py
+├── requirements.txt
+├── init.sh
+└── README.md
+```
