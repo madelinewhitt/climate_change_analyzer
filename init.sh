@@ -13,7 +13,6 @@ mkdir -p data/generated_data
 mkdir -p data/generated_data/images
 
 cd src
-<<<<<<< HEAD
 
 echo "Running data_processor.py..."
 python3 data_processor.py
