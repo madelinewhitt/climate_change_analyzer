@@ -103,6 +103,7 @@ The project's directory structure should look like this:
 │   ├── multi_algorithms.py
 │   ├── time_series.py
 │   └── clust.py
+├── tests/
 ├── requirements.txt
 ├── init.sh
 └── README.md
