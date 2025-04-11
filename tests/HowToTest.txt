@@ -1,2 +1,4 @@
 To run tests, go to the main project directory and run
+export PYTHONPATH=src
+and then
 python3 -m unittest

@@ -8,9 +8,9 @@ from data_processor import load_disaster
 
 
 def prep(df):
-    df = df.dropna(axis=1, how='all')
-    features = ['Start Year', 'Latitude', 'Longitude', 'Total Deaths']
-    targets = ['Latitude', 'Longitude', 'Total Deaths']
+    df = df.dropna(axis=1, how="all")
+    features = ["Start Year", "Latitude", "Longitude", "Total Deaths"]
+    targets = ["Latitude", "Longitude", "Total Deaths"]
     df = df.dropna(subset=features)
     df = df[~df[features].isin([np.inf, -np.inf]).any(axis=1)]
     df["Total Deaths"] = np.clip(df["Total Deaths"], 0, 5000)
@@ -27,11 +27,11 @@ def prep(df):
         print(f"MSE for {target}: {mse}")
 
         models[target] = model
-    #from types import SimpleNamespace
-   # model_bundle = SimpleNamespace(**models)
+    # from types import SimpleNamespace
+    # model_bundle = SimpleNamespace(**models)
     return models
 
-def pred(df):
+def pred(df, disType):
     future_years = np.arange(2025, 2035)
     future_months = np.tile(np.arange(1, 13), len(future_years))
 
@@ -41,24 +41,33 @@ def pred(df):
     future_longitudes = np.random.uniform(-180, 180, num_samples)
     future_deaths = np.random.uniform(0, 5000, num_samples)
 
-
-    future_df = pd.DataFrame({
-        'Start Year': np.repeat(future_years, 12),
-        'Latitude': future_latitudes,
-        'Longitude': future_longitudes,
-        'Total Deaths': future_deaths
-    })
-    models = prep(df)
-    for target in ['Latitude', 'Longitude', 'Total Deaths']:
-        input_features = ['Start Year', 'Latitude', 'Longitude', 'Total Deaths']
-        future_df[f'{target}'] = models[target].predict(future_df[input_features])
+    future_df = pd.DataFrame(
+        {
+            "Start Year": np.repeat(future_years, 12),
+            "Latitude": future_latitudes,
+            "Longitude": future_longitudes,
+            "Total Deaths": future_deaths,
+        }
+    )
     
+    models = prep(df)
+    
+    future_df = future_df[["Start Year", "Latitude", "Longitude", "Total Deaths"]]
+    
+    for target in ["Latitude", "Longitude", "Total Deaths"]:
+        input_features = ["Start Year", "Latitude", "Longitude", "Total Deaths"]
+        if target in models:
+            future_df[f"{target}"] = models[target].predict(future_df[input_features])
+
+    future_df["Disaster Type"] = disType
+
     future_df["Total Deaths"] = future_df["Total Deaths"].astype(int)
+
     future_df["Start Year"] = future_df["Start Year"].astype(int)
+
     future_df = future_df.dropna(subset=input_features)
+
     return future_df
-
-
 def vis(future_df, dis_type):
     plt.scatter(
         future_df["Longitude"],
@@ -75,18 +84,33 @@ def vis(future_df, dis_type):
 
 
 if __name__ == "__main__":
-    disaster_type = "Earthquake"
-    df = load_disaster(
-        disaster_type,
-        ["Start Year", "Start Month", "Latitude", "Longitude", "Total Deaths"],
-    )
-    print(f"running for {disaster_type}")
-    #model = prep(df)
-    future_df = pred(df)
-    
-    vis(future_df, disaster_type)
-    
-    csv_filename = f"../data/multipredictions.csv"
+    dfs = []
+    csv_filename = f"../data/generated_data/multipredictions.csv"
+    disaster_types = [
+        "Earthquake",
+        "Flood",
+        "Storm",
+        "Drought",
+        "Volcanic activity",
+        "Wildfire",
+    ]
+    for disType in disaster_types:
+        df = load_disaster(
+            disType,
+            [
+                "Disaster Type",
+                "Start Year",
+                "Start Month",
+                "Latitude",
+                "Longitude",
+                "Total Deaths",
+            ],
+        )
+        print(f"running for {disType}")
+        future_df = pred(df, disType)
+        # vis(future_df, disType)
+        dfs.append(future_df)
+
+    future_df = pd.concat(dfs, ignore_index=True)
     future_df.to_csv(csv_filename, index=False)
     print(f"Predictions saved to {csv_filename}")
-

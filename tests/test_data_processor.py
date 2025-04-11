@@ -1,10 +1,11 @@
 import unittest
+import numpy as np
 import os
 import pandas as pd
 from src.data_processor import getCountry, load_disaster, updateCoords, checkCoords
 
 TEST_FILE_PATH = os.path.join(
-    os.path.dirname(__file__), "../data/NaturalDisasters1900-2025WithCoords.csv"
+    os.path.dirname(__file__), "../data/generated_data/NaturalDisasters1900-2025WithCoords.csv"
 )
 
 
@@ -14,31 +15,27 @@ class Test_Data_Processor(unittest.TestCase):
     def test_CheckCoords(self):
         countrydata = {
             "name": ["Botswana", "Belarus", "Greece", "Saint Barthélemy"],
-            "Latitude": [-22.328474, 53.709807, 39.074208, 17.9000],
-            "Longitude": [24.684866, 27.953389, 21.824312, 62.8333],
+            "Latitude": [-22.328474, np.nan, 39.074208, np.nan],
+            "Longitude": [24.684866, np.nan, 21.824312, 62.8333],
         }
 
         countrydf = pd.DataFrame(countrydata)
-        val = (("Pairs:", 4), ("Only Long", 0), ("Only Lat", 0), ("Nothing", 0))
+        val = (("Pairs:", 2), ("Only Long", 1), ("Only Lat", 0), ("Nothing", 1))
         self.assertEqual(checkCoords(countrydf), val)
 
-        countrydata1 = {
+        countrydata = {
             "name": ["Botswana", "Belarus", "Greece", "Saint Barthélemy"],
             "Latitude": [-22.328474, 53.709807, 39.074208, 17.9000],
             "Longitude": [24.684866, 27.953389, 21.824312, 62.8333],
         }
-        countrydf = pd.DataFrame(countrydata1)
-        countrydf.replace(to_replace=24.684866, value=0, inplace=True)
+        countrydf = pd.DataFrame(countrydata)
 
-        val = (("Pairs:", 3), ("Only Long", 0), ("Only Lat", 1), ("Nothing", 0))
+        val = (("Pairs:", 4), ("Only Long", 0), ("Only Lat", 0), ("Nothing", 0))
         self.assertEqual(checkCoords(countrydf), val)
 
     """Test case for GetCountry function. Testing that the correct coordinates are returned for a given country."""
 
     def test_GetCountry(self):
-        # if country == "Saint Barthélemy":
-        #     return(17.9000,62.8333)
-
         countrydata = {
             "name": ["Botswana", "Canary Islands", "Greece", "Saint Barthélemy"],
             "latitude": [-22.328474, 28.2916, 39.074208, 0],
