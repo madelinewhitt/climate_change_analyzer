@@ -8,7 +8,6 @@ import Footer from './pages/Footer';        // Footer
 import Comparison from './pages/Comparison';
 import ClusterComparison from './pages/Clustering';
 import Anomalies from './pages/Anomalies';
-import './styles/App.css';                // Global styles
 
 const App: React.FC = () => {
   return (
