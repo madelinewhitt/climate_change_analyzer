@@ -6,6 +6,7 @@ import Home from './pages/Home';            // Home page component
 import About from './pages/About';          // About page component
 import Graph1 from './pages/Graph1';        // World Map Information
 import Footer from './pages/Footer';
+import Report from './pages/Report';
 import './styles/App.css';                // Global styles
 
 const App: React.FC = () => {
@@ -17,6 +18,7 @@ const App: React.FC = () => {
           <Route path="/" element={<><Home /> <Footer /></>} />
           <Route path="/about" element={<About />} />
           <Route path="/Graph1" element={<Graph1 />} />
+          <Route path="/report" element={<Report />} />
         </Routes>
       </div>
     </Router>
