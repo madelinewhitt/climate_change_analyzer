@@ -6,29 +6,45 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
+"""
+This file contains the training, and prediction for the single model algorithm
+It outputs the resulting files to /data/predictions.csv
+"""
+
 
 def prep(df):
-    df = df.dropna(axis=1, how="all")
+    """
+    1) Drops rows and columns with invalid values
+    2) Splits training and testing data: 80% and 20% respectively
+    3) Sets the rng split seed at 42 for consistency
+    4) Sets up 400 decision trees with a learning rate of 0.03
+    5) Trains the machine learning algorithm for "Total Deaths"
+    6) Mean squared error is produced after testing
+    """
 
+    df = df.dropna(axis=1, how="all")
     features = ["Start Year", "Start Month", "Latitude", "Longitude"]
     target = "Total Deaths"
 
     df = df.dropna(subset=["Total Deaths"])
-
     df = df[~df["Total Deaths"].isin([np.inf, -np.inf])]
-
     df["Total Deaths"] = np.clip(df["Total Deaths"], 0, np.inf)
+
+    #sets the testing data to be 20% "test_size = 0.2"
+    #"random_state = 42" ensures the same testing data is used every time
 
     X_train, X_test, y_train, y_test = train_test_split(
         df[features], df[target], test_size=0.2, random_state=42
     )
 
+    #sets the number of decision trees to be 400 "n_estimators=400"
+    #"learning_rate=0.03" indicates the rate at which trees can correct each others'
+    #output 
     model = xgb.XGBRegressor(n_estimators=400, learning_rate=0.03)
 
     model.fit(X_train, y_train)
 
     y_pred = model.predict(X_test)
-
     mse = mean_squared_error(y_test, y_pred)
 
     print(f"Mean Squared Error: {mse}")
@@ -36,6 +52,12 @@ def prep(df):
 
 
 def pred(df, model, disType):
+    """
+    Generates synthetic coordinate data to predict 
+    the total deaths during each event at the generated location
+    12 events are predicted per year
+    """
+
     future_years = np.arange(2025, 2035)
     future_months = np.tile(np.arange(1, 13), len(future_years))
 
@@ -62,6 +84,7 @@ def pred(df, model, disType):
 
     future_df["Total Deaths"] = model.predict(future_df)
 
+
     future_df["Total Deaths"] = np.clip(future_df["Total Deaths"], 0, np.inf)
 
     future_df["Total Deaths"] = future_df["Total Deaths"].astype(int)
@@ -74,22 +97,13 @@ def pred(df, model, disType):
     return future_df
 
 
-def vis(future_df, dis_type):
-    plt.scatter(
-        future_df["Longitude"],
-        future_df["Latitude"],
-        c=future_df["Total Deaths"],
-        cmap="coolwarm",
-        alpha=0.5,
-    )
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
-    plt.title(f"Predicted {dis_type} Deaths (Next 10 Years)")
-    plt.colorbar(label="Predicted Deaths")
-    plt.show()
-
 
 if __name__ == "__main__":
+
+    """
+    Runs the single model algorithm for each event
+    Outputs the prediction results into predictions.csv
+    """
     dfs = []
     csv_filename = f"../data/generated_data/predictions.csv"
     disaster_types = [
@@ -115,7 +129,6 @@ if __name__ == "__main__":
         print(f"running for {disType}")
         model = prep(df)
         future_df = pred(df, model, disType)
-        # vis(future_df, disType)
         dfs.append(future_df)
 
     future_df = pd.concat(dfs, ignore_index=True)

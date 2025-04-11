@@ -6,20 +6,49 @@ import numpy as np
 import matplotlib.pyplot as plt
 from data_processor import load_disaster
 
+"""
+This file contains the training, and prediction for the multi model algorithm
+It outputs the resulting files to /data/multipredictions.csv
+"""
 
 def prep(df):
-    df = df.dropna(axis=1, how="all")
+    """
+    This function creates multiple learning models in attempt to 
+    predict the Total Deaths as well as the event location
+
+    1) Drops rows and columns with invalid values (empty, infinite and total deaths > 5000)
+    2) Splits training and testing data: 80% and 20% respectively
+    3) Sets the rng split seed at 42 for consistency
+    4) Sets up 400 decision trees with a learning rate of 0.03
+    5) Creates a dictionary of trained ml learning models for each target
+    6) Mean squared error is produced after testing each model for each event
+    """
+
+
+    df = df.dropna(axis=1, how="all")    
     features = ["Start Year", "Latitude", "Longitude", "Total Deaths"]
     targets = ["Latitude", "Longitude", "Total Deaths"]
+
     df = df.dropna(subset=features)
     df = df[~df[features].isin([np.inf, -np.inf]).any(axis=1)]
+
+    #in attempt to lower the variange for total deaths,
+    #rows with total deaths over 5000 were dropped 
     df["Total Deaths"] = np.clip(df["Total Deaths"], 0, 5000)
+
     X_train, X_test = train_test_split(df[features], test_size=0.2, random_state=42)
+
+
+    #models is a dictionary that contains the learning model for each target
+    #this is also the return for this function to be used in the "prep" function
+    
     models = {}
+
+
     for target in targets:
+
         y_train = df.loc[X_train.index, target]
         y_test = df.loc[X_test.index, target]
-
         model = xgb.XGBRegressor(n_estimators=400, learning_rate=0.03)
         model.fit(X_train, y_train)
         y_pred = model.predict(X_test)
@@ -27,16 +56,20 @@ def prep(df):
         print(f"MSE for {target}: {mse}")
 
         models[target] = model
-    # from types import SimpleNamespace
-    # model_bundle = SimpleNamespace(**models)
+
     return models
 
 def pred(df, disType):
-    future_years = np.arange(2025, 2035)
-    future_months = np.tile(np.arange(1, 13), len(future_years))
 
+    """
+    Generates initial synthetic coordinates and death rates for the future years
+    The synthetic data is overwritten by the predicted values in the following order:
+    Latitude, Longitude, Total Death
+    """
+    future_years = np.arange(2025, 2035)
     num_samples = len(future_years) * 12
 
+    #the synthetic data used for the future predictions
     future_latitudes = np.random.uniform(-90, 90, num_samples)
     future_longitudes = np.random.uniform(-180, 180, num_samples)
     future_deaths = np.random.uniform(0, 5000, num_samples)
@@ -68,22 +101,14 @@ def pred(df, disType):
     future_df = future_df.dropna(subset=input_features)
 
     return future_df
-def vis(future_df, dis_type):
-    plt.scatter(
-        future_df["Longitude"],
-        future_df["Latitude"],
-        c=future_df["Total Deaths"],
-        cmap="coolwarm",
-        alpha=0.5,
-    )
-    plt.xlabel("Longitude")
-    plt.ylabel("Latitude")
-    plt.title(f"Predicted {dis_type} Deaths (Next 10 Years)")
-    plt.colorbar(label="Predicted Deaths")
-    plt.show()
 
 
 if __name__ == "__main__":
+
+    """
+    Runs the multi model algorithm for each event
+    Outputs the prediction results into multipredictions.csv
+    """
     dfs = []
     csv_filename = f"../data/generated_data/multipredictions.csv"
     disaster_types = [
@@ -108,7 +133,7 @@ if __name__ == "__main__":
         )
         print(f"running for {disType}")
         future_df = pred(df, disType)
-        # vis(future_df, disType)
+
         dfs.append(future_df)
 
     future_df = pd.concat(dfs, ignore_index=True)
